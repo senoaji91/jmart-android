@@ -244,9 +244,9 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
-//        if(LoginActivity.getLoggedAccount().store == null){
-//            menu.getItem(1).setVisible(false);
-//        }
+        if(LoginActivity.getLoggedAccount().store == null){
+            menu.getItem(1).setVisible(false);
+        }
         return true;
     }
     @Override
