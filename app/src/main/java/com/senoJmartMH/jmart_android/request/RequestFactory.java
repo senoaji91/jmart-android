@@ -1,5 +1,12 @@
 package com.senoJmartMH.jmart_android.request;
 
+/**
+ * Class RequestFactory - class untuk mendefine back end yang digunakan
+ *
+ * @author Seno Aji Wicaksono
+ * @version 18-12-2021
+ */
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
@@ -27,4 +34,3 @@ public class RequestFactory {
         return new StringRequest(Request.Method.GET, url, listener, errorListener);
     }
 }
-

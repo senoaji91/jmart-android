@@ -1,27 +1,11 @@
 package com.senoJmartMH.jmart_android;
 
-import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.*;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.InputStreamReader;
-
-import com.senoJmartMH.jmart_android.model.Account;
-import com.senoJmartMH.jmart_android.model.Store;
-import com.senoJmartMH.jmart_android.request.LoginRequest;
+/**
+ * Class LoginActivity - Activity untuk Login Menu
+ *
+ * @author Seno Aji Wicaksono
+ * @version 18-12-2021
+ */
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -53,7 +37,7 @@ public class LoginActivity extends AppCompatActivity{
     private EditText etEmail;
     private EditText etPassword;
     private Button btnLogin;
-
+    //Method to get the currently logged account
     public static Account getLoggedAccount(){
         return loggedAccount;
     }
@@ -68,8 +52,8 @@ public class LoginActivity extends AppCompatActivity{
         btnLogin = findViewById(R.id.btnLogin);
         tv_registerNow = findViewById(R.id.tv_registerNow);
 
-//        etEmail.setText("email");
-//        etPassword.setText("password");
+//        etEmail.setText("");
+//        etPassword.setText("Pass1234");
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -110,11 +94,11 @@ public class LoginActivity extends AppCompatActivity{
     public void openRegisterActivity(){
         startActivity(new Intent(this, RegisterActivity.class));
     }
-
+    //Method to reload the currently logged account after it's modified
     public static void reloadLoggedAccount(String response){
         loggedAccount = gson.fromJson(response, Account.class);
     }
-
+    //Method to insert newly created Store data to a logged account;
     public static void insertLoggedAccountStore(String response){
         Store newStore = gson.fromJson(response, Store.class);
         loggedAccount.store = newStore;

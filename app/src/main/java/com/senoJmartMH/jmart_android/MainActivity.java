@@ -1,5 +1,8 @@
 package com.senoJmartMH.jmart_android;
-
+/**
+ * @author Seno Aji Wicaksono
+ * @version 05-12-2021
+ */
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -43,17 +46,18 @@ import java.util.List;
 import com.senoJmartMH.jmart_android.model.Product;
 
 public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
+    public static final String EXTRA_PRODUCTID = "com.senoJmartMH.jmart_android.EXTRA_PRODUCTID";
     private static final Gson gson = new Gson();
     MyRecyclerViewAdapter adapter;
     private TabLayout mainTabLayout;
-    //CardView Product
+
     private CardView cv_product;
     private Button btnPrev;
     private Button btnNext;
     private Button btnGo;
     private EditText et_page;
     private int page;
-    //CardView Filter
+
     private CardView cv_filter;
     private EditText et_productName;
     private EditText et_lowestPrice;
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     private Button btnApply;
     private Button btnClear;
     private Spinner spinner_filterCategory;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                 }
             }
             @Override
-            public void onTabReselected(TabLayout.Tab tab) { } //Reselect Tab unused.
+            public void onTabReselected(TabLayout.Tab tab) { }
         });
         //Request to Fetch Product Lists
         List<Product> productNames = new ArrayList<>();
@@ -110,16 +115,17 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
         btnPrev = findViewById(R.id.btnPrev);
         btnNext = findViewById(R.id.btnNext);
         btnGo   = findViewById(R.id.btnGo);
         et_page = findViewById(R.id.et_page);
-        btnPrev.setOnClickListener(new View.OnClickListener() {
+        btnPrev.setOnClickListener(new View.OnClickListener() {             //Handle pagination buttons
             @Override
             public void onClick(View v) {
                 if(page > 0){
                     page--;
-                    fetchProduct(productNames, page, queue, true);
+                    fetchProduct(productNames, page, queue, true);  //Update the list with paginated products
                 }
             }
         });
@@ -134,7 +140,13 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                page = Integer.parseInt(et_page.getText().toString());
+                try{
+                    page = Integer.parseInt(et_page.getText().toString());
+                }catch (NumberFormatException e){
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Please input a valid page number.", Toast.LENGTH_LONG).show();
+                    page = 0;
+                }
                 fetchProduct(productNames, page, queue, true);
             }
         });
@@ -171,11 +183,12 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                                 productNames.add(gson.fromJson(reader, Product.class));
                             }
                             adapter.refresh(productNames);
+                            reader.close();
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(), "Filter product unsuccessful, error occurred", Toast.LENGTH_LONG).show();
                         }
-
+                        //After filtering, move back to display the product tab (set product visible, set Filter invisible)
                         cv_product.setVisibility(View.VISIBLE);
                         cv_filter.setVisibility(View.INVISIBLE);
                         Toast.makeText(getApplicationContext(), "Filtering Succesful", Toast.LENGTH_LONG).show();
@@ -189,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                 queue.add(filterRequest);
             }
         });
-
+        //Clear the input fields
         btnClear = findViewById(R.id.btnClear);
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
             }
         });
     }
-
+    //Fetch Products Request Method
     public void fetchProduct(List<Product> productNames, int page, RequestQueue queue, boolean refreshAdapter){
         StringRequest fetchProductsRequest = new StringRequest(Request.Method.GET, "http://10.0.2.2:8080/product/page?page="+page+"&pageSize=10", new Response.Listener<String>() {
             @Override
@@ -235,7 +248,10 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(getApplicationContext(), "Testing click product", Toast.LENGTH_LONG).show();
+        int clickedItemId = adapter.getClickedItemId(position);
+        Intent intent = new Intent(getApplicationContext(), ProductDetailActivity.class);
+        intent.putExtra(EXTRA_PRODUCTID, clickedItemId);
+        startActivity(intent);
     }
 
     @Override
@@ -251,7 +267,6 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.menu_search:
 //                startActivity(new Intent(this, RegisterActivity.class));

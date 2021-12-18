@@ -10,7 +10,14 @@ import java.util.Map;
 
 import com.senoJmartMH.jmart_android.model.ProductCategory;
 
+/**
+ * Class CreateProductRequest - Class untuk mendefine request create product
+ *
+ * @author Seno Aji Wicaksono
+ * @version 18-12-2021
+ */
 
+//Class for creating new product Requests
 public class CreateProductRequest extends StringRequest {
     private Map<String, String> params;
 

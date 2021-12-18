@@ -1,5 +1,12 @@
 package com.senoJmartMH.jmart_android;
 
+/**
+ * Class AboutMeActivity - Activity untuk halaman User Profile
+ *
+ * @author Seno Aji Wicaksono
+ * @version 18-12-2021
+ */
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -31,19 +38,15 @@ import com.senoJmartMH.jmart_android.request.RegisterRequest;
 import com.senoJmartMH.jmart_android.request.RegisterStoreRequest;
 
 public class AboutMeActivity extends AppCompatActivity {
-    private TextView tv_userName;
-    private TextView tv_userEmail;
-    private TextView tv_userBalance;
-    private Button btnTopUp;
-    private Button btnRegisterStore;
+    private TextView tv_userName, tv_userEmail, tv_userBalance;
+    private Button btnTopUp, btnRegisterStore, btnInvoiceHistory;
     private EditText et_topUpAmount;
     private CardView cv_storeExists;
+    //CardView Register Store
     private CardView cv_registerStore;
-    private EditText et_storeName;
-    private EditText et_storeAddress;
-    private EditText et_storePhoneNumber;
-    private Button btnRegisterStoreCancel;
-    private Button btnRegisterStoreConfirm;
+    private EditText et_storeName, et_storeAddress, et_storePhoneNumber;
+    private Button btnRegisterStoreCancel, btnRegisterStoreConfirm;
+    //CardView Store Exists
     private TextView tv_storeNameF;
     private TextView tv_storeAddressF;
     private TextView tv_storePhoneNumberF;
@@ -61,6 +64,16 @@ public class AboutMeActivity extends AppCompatActivity {
         tv_userName.setText(LoginActivity.getLoggedAccount().name);
         tv_userEmail.setText(LoginActivity.getLoggedAccount().email);
         tv_userBalance.setText(String.valueOf(LoginActivity.getLoggedAccount().balance));
+        //Button to redirect to InvoiceHistory Activity
+        btnInvoiceHistory = findViewById(R.id.btnInvoiceHistory);
+        btnInvoiceHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InvoiceHistoryActivity.class);
+                startActivity(intent);
+            }
+        });
+        //Top Up button handler
         btnTopUp = findViewById(R.id.btnTopUp);
         btnTopUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,9 +85,9 @@ public class AboutMeActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         LoginActivity.reloadLoggedAccount(response);
                         try {
-                            Toast.makeText(getApplicationContext(), "Top Up successful", Toast.LENGTH_LONG).show();
-                            finish();
-                            startActivity(getIntent());
+                                Toast.makeText(getApplicationContext(), "Top Up successful", Toast.LENGTH_LONG).show();
+                                finish();
+                                startActivity(getIntent());
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(), "Top Up unsuccessful, error occurred", Toast.LENGTH_LONG).show();
@@ -96,6 +109,7 @@ public class AboutMeActivity extends AppCompatActivity {
                 queue.add(topUpRequest);
             }
         });
+        //Check if Store exists / Register New Store
         btnRegisterStore = findViewById(R.id.btnRegisterStore);
         cv_registerStore = findViewById(R.id.cv_registerStore);
         cv_storeExists = findViewById(R.id.cv_storeExists);
@@ -107,6 +121,7 @@ public class AboutMeActivity extends AppCompatActivity {
         if(LoginActivity.getLoggedAccount().store != null){
             btnRegisterStore.setVisibility(View.GONE);
             cv_storeExists.setVisibility(View.VISIBLE);
+            //Show the existing store
             tv_storeNameF = findViewById(R.id.tv_storeNameF);
             tv_storeAddressF = findViewById(R.id.tv_storeAddressF);
             tv_storePhoneNumberF = findViewById(R.id.tv_storePhoneNumberF);
@@ -114,6 +129,9 @@ public class AboutMeActivity extends AppCompatActivity {
             tv_storeAddressF.setText(LoginActivity.getLoggedAccount().store.address);
             tv_storePhoneNumberF.setText(LoginActivity.getLoggedAccount().store.phoneNumber);
         }
+        //Click register store button -> Hide button, show Registering Store CardView
+        //Click register store cancel button -> hide Registering Store CardView, show button again
+        //Click register store confirm button -> if fail, display error toast. If succesful, reload the activity with new store
         btnRegisterStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

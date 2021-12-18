@@ -1,5 +1,11 @@
 package com.senoJmartMH.jmart_android;
 
+/**
+ * Class RegisterActivity - write a description of the class here
+ *
+ * @author Seno Aji Wicaksono
+ * @version 18-12-2021
+ */
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -59,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                             else{
-                                Toast.makeText(getApplicationContext(), "Register unsuccessful, jsonObj null", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Register unsuccessful", Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

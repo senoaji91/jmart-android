@@ -1,5 +1,12 @@
 package com.senoJmartMH.jmart_android.model;
 
+/**
+ * Class Account - Class untuk mendedinisikan object account
+ *
+ * @author Seno Aji Wicaksono
+ * @version 18-12-2021
+ */
+
 public class Account extends Serializable{
     public double balance;
     public String email;

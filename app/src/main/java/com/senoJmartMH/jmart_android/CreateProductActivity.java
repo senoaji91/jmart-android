@@ -1,5 +1,11 @@
 package com.senoJmartMH.jmart_android;
 
+/**
+ * Class CreateProductActivity - Activity untuk halaman create product
+ *
+ * @author Seno Aji Wicaksono
+ * @version 18-12-2021
+ */
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +40,7 @@ public class CreateProductActivity extends AppCompatActivity {
         et_createProductDiscount = findViewById(R.id.et_createProductDiscount);
         spinner_createCategory = findViewById(R.id.spinner_createCategory);
         spinner_createShipment = findViewById(R.id.spinner_createShipment);
+        //Handle checking value of checked radiogroup buttons
         radio_conditionList = findViewById(R.id.radio_conditionList);
         radio_conditionList.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -59,6 +66,7 @@ public class CreateProductActivity extends AppCompatActivity {
                 String productDiscount = et_createProductDiscount.getText().toString();
                 String productCategory = spinner_createCategory.getSelectedItem().toString();
                 String productShipment = spinner_createShipment.getSelectedItem().toString();
+                //Convert productShipment string value into byte values to be stored
                 switch (productShipment) {
                     case "INSTANT":
                         productShipment = String.valueOf(0);
@@ -88,6 +96,7 @@ public class CreateProductActivity extends AppCompatActivity {
                                 try {
                                     Toast.makeText(getApplicationContext(), "Create product successful", Toast.LENGTH_LONG).show();
                                     finish();
+                                    //If succesful, go back to/and reload the Main Activity
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Toast.makeText(getApplicationContext(), "Create product unsuccessful, error occurred", Toast.LENGTH_LONG).show();

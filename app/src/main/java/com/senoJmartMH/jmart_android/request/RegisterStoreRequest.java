@@ -1,5 +1,11 @@
 package com.senoJmartMH.jmart_android.request;
 
+/**
+ * Class RegisterStoreRequest - class untuk mendefine request register store
+ *
+ * @author Seno Aji Wicaksono
+ * @version 18-12-2021
+ */
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
@@ -23,4 +29,3 @@ public class RegisterStoreRequest extends StringRequest{
         return params;
     }
 }
-
